@@ -1,0 +1,91 @@
+// BRUTE FORCE O(N^2) -> USING TWO FOR LOOPS AND GENERATING EACH SUBSTRING AND CHHECKING ITS COST 
+class Solution {
+    public int equalSubstring(String s, String t, int maxCost) {
+        for(int i=0;i<s.length();i++){
+            String temp1="";
+            String temp2="";
+            int cost=0;
+            for(int j=i;j<s.length();j++){
+                temp1+=s.charAt(j);
+                temp2+=t.charAt(j);
+                cost+=Math.abs(s.charAt(j)-t.charAt(j));
+               // System.out.println("temp1->"+temp1+" temp2->"+temp2+" cost->"+cost);
+                if(cost<=maxCost){
+                    maxlen=Math.max(maxlen,j-i+1);
+                }
+                else {
+                    break;
+                }
+            }
+        }
+        return maxlen;
+   }
+}
+
+
+// BETTER O(NlongN) using prefix sum and binary search
+
+class Solution {
+    public int equalSubstring(String s, String t, int maxCost) {
+        int [] pre=new int [s.length()+1];
+        for(int i=1;i<=t.length();i++){
+            pre[i]=pre[i-1]+Math.abs(s.charAt(i-1)-t.charAt(i-1));
+        }
+        int lo=0;
+        int hi=s.length();
+        int ans=0;
+        while(lo<=hi){
+            int mid=lo+(hi-lo)/2;
+            if(isPossible(pre,maxCost,mid)){
+                ans=mid;
+                lo=mid+1;
+
+            }
+            else {
+                hi=mid-1;
+            }
+        }
+        return ans;
+        
+    }
+    boolean isPossible(int [] pre,int maxCost,int mid){
+        int i=0;
+        int j=mid;
+        while(j<pre.length){
+            if(pre[j]-pre[i]<=maxCost){
+                return true;
+            }
+            i++;
+            j++;
+        }
+        return false;
+    }
+}
+
+// OPTIMAL  O(N) USING SLIDING WINDOW 
+
+class Solution {
+    public int equalSubstring(String s, String t, int maxCost) {
+        int maxlen=0;
+        int i=0;
+        int j=0;
+        int cost=0;
+        while(j<s.length()){
+            cost+=Math.abs(s.charAt(j)-t.charAt(j));
+            if(cost<=maxCost){
+                maxlen=Math.max(maxlen,j-i+1);
+                j++;
+            }
+            else {
+                while(cost>maxCost){
+                    cost-=Math.abs(s.charAt(i)-t.charAt(i));
+                    i++;
+
+                }
+                j++;
+            }
+        }
+        return maxlen;
+     }
+}
+
