@@ -23,20 +23,19 @@ public class Solution {
     int dfs(int node, List<List<Integer>> adj, HashSet<Integer> vis) {
         if(adj.get(node).size()==0)return 0;
     vis.add(node);
-    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a); // Max heap
+    PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);  
     for (int x : adj.get(node)) {
         if (!vis.contains(x))
             pq.offer(1 + dfs(x, adj, vis));
     }
     vis.remove(node);
     
-    if (pq.isEmpty()) return 0; // No children
+    if (pq.isEmpty()) return 0;  
     
-    // Take the top two depths from the children
     int x1 = pq.poll();
-    int x2 = pq.isEmpty() ? 0 : pq.poll(); // If there's only one child, set x2 to 0
+    int x2 = pq.isEmpty() ? 0 : pq.poll(); 
     
-    max = Math.max(max, x1 + x2); // Update max distance if needed
+    max = Math.max(max, x1 + x2);  
     
     return x1; // Return the maximum depth among the children
 }
