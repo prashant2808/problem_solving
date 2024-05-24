@@ -1,5 +1,5 @@
 import java.util.*;
-public class given_an_array_and_three_numbers_xyz {
+public class Solution {
 
     static int find(int[] a, int x, int y, int z, int stage, int index,Map<String,Integer> memo) {
         if (index >= a.length) {
